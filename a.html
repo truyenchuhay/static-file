@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bảng Gói Dịch Vụ & Bảng Giá Bất Động Sản</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .app-card {
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .app-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 30px -10px rgba(15, 23, 42, 0.1);
+        }
+
+        .custom-scroll::-webkit-scrollbar {
+            height: 6px;
+            width: 6px;
+        }
+
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 999px;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen pb-16 antialiased">
+
+    <!-- App Header Bar -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-40 backdrop-blur-md bg-white/90">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div
+                    class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white shadow-md shadow-emerald-500/20">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
+                        </path>
+                    </svg>
+                </div>
+                <div>
+                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Hệ Thống Đăng Tin</span>
+                    <h2 class="text-base font-extrabold text-slate-900 leading-tight">Dịch Vụ Bất Động Sản</h2>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <span
+                    class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-semibold">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Bán & Cho Thuê
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Title & Navigation Tabs -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-10 text-center">
+        <h1 class="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+            Gói Đăng Tin & Giải Pháp Tiếp Thị Bất Động Sản
+        </h1>
+        <p class="mt-2.5 text-sm sm:text-base text-slate-600 max-w-2xl mx-auto">
+            Tối ưu hóa khả năng tiếp cận khách hàng tiềm năng cho chủ nhà, nhà môi giới và sàn giao dịch bất động sản.
+        </p>
+
+        <!-- Main Navigation Switcher -->
+        <div class="mt-8 flex justify-center">
+            <div
+                class="inline-flex p-1.5 bg-slate-200/90 rounded-2xl shadow-inner gap-1 max-w-full overflow-x-auto custom-scroll">
+                <button onclick="switchView('combo')" id="nav-combo"
+                    class="nav-tab px-4 sm:px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all bg-white text-slate-900 shadow-sm whitespace-nowrap">
+                    🔥 Gói Combo Tiết Kiệm
+                </button>
+                <button onclick="switchView('daily')" id="nav-daily"
+                    class="nav-tab px-4 sm:px-6 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all text-slate-600 hover:text-slate-900 whitespace-nowrap">
+                    📅 Bảng Giá Ngày (Bán / Thuê)
+                </button>
+                <button onclick="switchView('vip-cashback')" id="nav-vip-cashback"
+                    class="nav-tab px-4 sm:px-6 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all text-slate-600 hover:text-slate-900 whitespace-nowrap">
+                    💎 Gói VIP Hoàn Tiền
+                </button>
+                <button onclick="switchView('deposit')" id="nav-deposit"
+                    class="nav-tab px-4 sm:px-6 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all text-slate-600 hover:text-slate-900 whitespace-nowrap">
+                    ⚡ Nạp Tiền Nhanh
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= SECTION 1: GÓI COMBO ================= -->
+    <section id="section-combo" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+
+            <!-- 1. Phủ Sóng 50 -->
+            <div
+                class="app-card bg-white rounded-3xl p-6 border border-slate-200 flex flex-col justify-between shadow-sm relative overflow-hidden">
+                <div>
+                    <!-- Illustration: Cụm nhà đất & Vòng sóng tiếp cận -->
+                    <div class="w-full h-32 flex items-center justify-center bg-teal-50/70 rounded-2xl mb-4">
+                        <svg class="w-24 h-24" viewBox="0 0 140 120" fill="none">
+                            <ellipse cx="70" cy="100" rx="45" ry="10" fill="#E2E8F0" />
+                            <rect x="48" y="48" width="44" height="52" rx="6" fill="#0D9488" />
+                            <polygon points="70,26 40,50 100,50" fill="#0F766E" />
+                            <rect x="58" y="58" width="10" height="10" rx="2" fill="#99F6E4" />
+                            <rect x="74" y="58" width="10" height="10" rx="2" fill="#99F6E4" />
+                            <rect x="64" y="76" width="12" height="24" rx="2" fill="#115E59" />
+                            <!-- Sóng radar -->
+                            <circle cx="70" cy="24" r="8" stroke="#14B8A6" stroke-width="2" stroke-dasharray="2 2" />
+                            <circle cx="70" cy="24" r="16" stroke="#2DD4BF" stroke-width="2" stroke-opacity="0.7" />
+                            <circle cx="70" cy="24" r="24" stroke="#5EEAD4" stroke-width="1.5" stroke-opacity="0.4" />
+                        </svg>
+                    </div>
+                    <span class="text-[11px] font-bold text-teal-700 bg-teal-50 px-2.5 py-1 rounded-md uppercase">Cá
+                        nhân & Môi giới nhỏ</span>
+                    <h3 class="text-lg font-bold text-slate-900 mt-2">Phủ Sóng 50</h3>
+                    <div class="mt-2 flex items-baseline gap-1">
+                        <span class="text-2xl font-extrabold text-slate-900">300.000</span>
+                        <span class="text-sm font-semibold text-slate-500">đ</span>
+                        <span
+                            class="text-xs text-teal-700 bg-teal-100 px-2 py-0.5 rounded-full ml-2 font-bold">6.000đ/tin</span>
+                    </div>
+                    <hr class="my-4 border-slate-100">
+                    <ul class="space-y-2.5 text-xs text-slate-600 font-medium">
+                        <li class="flex items-center gap-2">
+                            <span
+                                class="w-4 h-4 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-[10px] font-bold">✓</span>
+                            <strong>50 tin thường</strong> đăng bán & cho thuê
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span
+                                class="w-4 h-4 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-[10px] font-bold">✓</span>
+                            Hiển thị tối đa <strong>60 ngày / tin</strong>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span
+                                class="w-4 h-4 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-[10px] font-bold">✓</span>
+                            Phù hợp nguồn hàng vừa và nhỏ
+                        </li>
+                    </ul>
+                </div>
+                <button onclick="openCheckout('Combo Phủ Sóng 50', '300.000 đ')"
+                    class="mt-6 w-full py-3 bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-teal-600/20">
+                    Mua Gói Phủ Sóng 50
+                </button>
+            </div>
+
+            <!-- 2. Phủ Sóng 100 (Best Seller) -->
+            <div
+                class="app-card bg-white rounded-3xl p-6 border-2 border-emerald-500 flex flex-col justify-between shadow-xl shadow-emerald-500/10 relative overflow-hidden">
+                <div
+                    class="absolute top-0 left-0 right-0 bg-gradient-to-r from-amber-500 to-rose-500 text-white text-[10px] font-black uppercase py-1 text-center tracking-wider">
+                    🔥 BEST SELLER • PHỦ RỘNG BẤT ĐỘNG SẢN 🔥
+                </div>
+                <div class="pt-3">
+                    <!-- Illustration: Quần thể nhà đất & Đô thị phủ sóng -->
+                    <div class="w-full h-32 flex items-center justify-center bg-emerald-50 rounded-2xl mb-4">
+                        <svg class="w-28 h-28" viewBox="0 0 160 120" fill="none">
+                            <ellipse cx="80" cy="102" rx="60" ry="12" fill="#E2E8F0" />
+                            <!-- Tòa nhà chính & nhà phố -->
+                            <rect x="35" y="55" width="26" height="45" rx="4" fill="#34D399" />
+                            <rect x="66" y="38" width="34" height="62" rx="5" fill="#059669" />
+                            <rect x="105" y="58" width="24" height="42" rx="4" fill="#10B981" />
+                            <!-- Cột sóng trung tâm -->
+                            <path d="M83 38V18" stroke="#047857" stroke-width="3" stroke-linecap="round" />
+                            <circle cx="83" cy="16" r="5" fill="#F59E0B" />
+                            <path d="M68 12C78 4 92 4 100 12" stroke="#10B981" stroke-width="2.5"
+                                stroke-linecap="round" />
+                            <path d="M58 4C75 -6 98 -6 112 4" stroke="#34D399" stroke-width="2" stroke-linecap="round"
+                                stroke-dasharray="2 2" />
+                        </svg>
+                    </div>
+                    <span
+                        class="text-[11px] font-bold text-emerald-800 bg-emerald-100 px-2.5 py-1 rounded-md uppercase">Đơn
+                        vị có nhiều nguồn hàng</span>
+                    <h3 class="text-lg font-bold text-slate-900 mt-2">Phủ Sóng 100</h3>
+                    <div class="mt-2 flex items-baseline gap-1">
+                        <span class="text-2xl font-extrabold text-slate-900">600.000</span>
+                        <span class="text-sm font-semibold text-slate-500">đ</span>
+                        <span
+                            class="text-xs text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-full ml-2 font-bold">6.000đ/tin</span>
+                    </div>
+                    <hr class="my-4 border-slate-100">
+                    <ul class="space-y-2.5 text-xs text-slate-700 font-medium">
+                        <li class="flex items-center gap-2">
+                            <span
+                                class="w-4 h-4 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[10px] font-bold">✓</span>
+                            <strong>100 tin thường</strong> bán & cho thuê
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span
+                                class="w-4 h-4 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[10px] font-bold">✓</span>
+                            Thời hạn mỗi tin <strong>60 ngày</strong>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span
+                                class="w-4 h-4 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[10px] font-bold">✓</span>
+                            Tối ưu cho môi giới chuyên nghiệp & sàn
+                        </li>
+                    </ul>
+                </div>
+                <button onclick="openCheckout('Combo Phủ Sóng 100', '600.000 đ')"
+                    class="mt-6 w-full py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-emerald-600/30">
+                    Mua Gói Phủ Sóng 100
+                </button>
+            </div>
+
+            <!-- 3. Combo Thường (Steel) -->
+            <div
+                class="app-card bg-white rounded-3xl p-6 border border-slate-200 flex flex-col justify-between shadow-sm relative">
+                <div>
+                    <!-- Illustration: Hợp đồng & Chìa khóa nhà -->
+                    <div class="w-full h-32 flex items-center justify-center bg-blue-50/70 rounded-2xl mb-4">
+                        <svg class="w-24 h-24" viewBox="0 0 140 120" fill="none">
+                            <ellipse cx="70" cy="100" rx="45" ry="10" fill="#E2E8F0" />
+                            <rect x="45" y="30" width="50" height="68" rx="6" fill="#3B82F6" />
+                            <path d="M45 30C45 27 48 24 51 24H89C92 24 95 27 95 30V40H45V30Z" fill="#1D4ED8" />
+                            <rect x="55" y="48" width="30" height="3" rx="1.5" fill="#BFDBFE" />
+                            <rect x="55" y="58" width="22" height="3" rx="1.5" fill="#BFDBFE" />
+                            <rect x="55" y="68" width="26" height="3" rx="1.5" fill="#BFDBFE" />
+                            <!-- Chìa khóa bất động sản -->
+                            <circle cx="88" cy="80" r="8" stroke="#F59E0B" stroke-width="3" fill="white" />
+                            <rect x="94" y="78" width="16" height="4" rx="1" fill="#F59E0B" />
+                            <rect x="104" y="82" width="3" height="4" fill="#F59E0B" />
+                        </svg>
+                    </div>
+                    <span class="text-[11px] font-bold text-blue-700 bg-blue-50 px-2.5 py-1 rounded-md uppercase">Combo
+                        Tiêu Chuẩn</span>
+                    <h3 class="text-lg font-bold text-slate-900 mt-2">Combo Thường</h3>
+                    <div class="mt-2 flex items-baseline gap-1">
+                        <span class="text-2xl font-extrabold text-slate-900">200.000</span>
+                        <span class="text-sm font-semibold text-slate-500">đ</span>
+                    </div>
+                    <hr class="my-4 border-slate-100">
+                    <ul class="space-y-2.5 text-xs text-slate-600 font-medium">
+                        <li class="flex items-center gap-2">
+                            <span
+                                class="w-4 h-4 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-[10px] font-bold">✓</span>
+                            <strong>15 tin thường</strong> (60 ngày/tin)
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span
+                                class="w-4 h-4 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-[10px] font-bold">✓</span>
+                            <strong>15 lần up tin</strong> đẩy bài lên đầu
+                        </li>
+                    </ul>
+                </div>
+                <button onclick="openCheckout('Combo Thường', '200.000 đ')"
+                    class="mt-6 w-full py-3 border border-slate-300 hover:border-slate-800 text-slate-800 font-bold text-xs rounded-xl transition-all">
+                    Mua Ngay
+                </button>
+            </div>
+
+            <!-- 4. Combo Copper -->
+            <div
+                class="app-card bg-white rounded-3xl p-6 border border-slate-200 flex flex-col justify-between shadow-sm relative">
+                <div>
+                    <!-- Illustration: Khiên đồng & Huy hiệu VIP 3 -->
+                    <div class="w-full h-32 flex items-center justify-center bg-orange-50/70 rounded-2xl mb-4">
+                        <svg class="w-24 h-24" viewBox="0 0 140 120" fill="none">
+                            <ellipse cx="70" cy="100" rx="42" ry="10" fill="#FED7AA" />
+                            <path d="M70 28L98 40V68C98 86 70 98 70 98C70 98 42 86 42 68V40L70 28Z" fill="#EA580C" />
+                            <path d="M70 33L93 43V67C93 82 70 92 70 92C70 92 47 82 47 67V43L70 33Z" fill="#F97316" />
+                            <!-- Sao VIP 3 -->
+                            <polygon points="70,48 73,56 82,57 75,63 77,71 70,67 63,71 65,63 58,57 67,56"
+                                fill="#FEF08A" />
+                        </svg>
+                    </div>
+                    <span
+                        class="text-[11px] font-bold text-orange-700 bg-orange-50 px-2.5 py-1 rounded-md uppercase">Combo
+                        Đồng</span>
+                    <h3 class="text-lg font-bold text-slate-900 mt-2">Copper</h3>
+                    <div class="mt-2 flex items-baseline gap-1">
+                        <span class="text-2xl font-extrabold text-slate-900">600.000</span>
+                        <span class="text-sm font-semibold text-slate-500">đ</span>
+                    </div>
+                    <hr class="my-4 border-slate-100">
+                    <ul class="space-y-2.5 text-xs text-slate-600 font-medium">
+                        <li class="flex items-center gap-2">
+                            <span
+                                class="w-4 h-4 rounded-full bg-orange-100 text-orange-700 flex items-center justify-center text-[10px] font-bold">✓</span>
+                            <strong>5 tin VIP 3</strong> (Hiển thị 15 ngày / tin)
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span
+                                class="w-4 h-4 rounded-full bg-orange-100 text-orange-700 flex items-center justify-center text-[10px] font-bold">✓</span>
+                            <strong>15 tin thường</strong> (Hiển thị 60 ngày / tin)
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span
+                                class="w-4 h-4 rounded-full bg-orange-100 text-orange-700 flex items-center justify-center text-[10px] font-bold">✓</span>
+                            <strong>20 lần up tin</strong>
+                        </li>
+                    </ul>
+                </div>
+                <button onclick="openCheckout('Combo Copper', '600.000 đ')"
+                    class="mt-6 w-full py-3 border-2 border-orange-200 hover:border-orange-500 text-orange-600 font-bold text-xs rounded-xl transition-all">
+                    Mua Ngay
+                </button>
+            </div>
+
+            <!-- 5. Combo Silver -->
+            <div
+                class="app-card bg-white rounded-3xl p-6 border border-slate-200 flex flex-col justify-between shadow-sm relative">
+                <div>
+                    <!-- Illustration: Huy hiệu Bạc Silver -->
+                    <div class="w-full h-32 flex items-center justify-center bg-slate-100 rounded-2xl mb-4">
+                        <svg class="w-24 h-24" viewBox="0 0 140 120" fill="none">
+                            <ellipse cx="70" cy="100" rx="42" ry="9" fill="#CBD5E1" />
+                            <circle cx="70" cy="60" r="32" fill="#64748B" />
+                            <circle cx="70" cy="60" r="26" fill="#94A3B8" />
+                            <circle cx="70" cy="60" r="22" fill="#E2E8F0" />
+                            <!-- Vương miện 2 tầng -->
+                            <polygon points="60,66 80,66 82,54 75,58 70,50 65,58 58,54" fill="#334155" />
+                        </svg>
+                    </div>
+                    <span
+                        class="text-[11px] font-bold text-slate-700 bg-slate-100 px-2.5 py-1 rounded-md uppercase">Combo
+                        Bạc</span>
+                    <h3 class="text-lg font-bold text-slate-900 mt-2">Silver</h3>
+                    <div class="mt-2 flex items-baseline gap-1">
+                        <span class="text-2xl font-extrabold text-slate-900">1.000.000</span>
+                        <span class="text-sm font-semibold text-slate-500">đ</span>
+                    </div>
+                    <hr class="my-4 border-slate-100">
+                    <ul class="space-y-2.5 text-xs text-slate-600 font-medium">
+                        <li class="flex items-center gap-2">
+                            <span
+                                class="w-4 h-4 rounded-full bg-slate-200 text-slate-800 flex items-center justify-center text-[10px] font-bold">✓</span>
+                            <strong>5 tin VIP 2</strong> (Hiển thị 15 ngày / tin)
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span
+                                class="w-4 h-4 rounded-full bg-slate-200 text-slate-800 flex items-center justify-center text-[10px] font-bold">✓</span>
+                            <strong>5 tin VIP 3</strong> (Hiển thị 15 ngày / tin)
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span
+                                class="w-4 h-4 rounded-full bg-slate-200 text-slate-800 flex items-center justify-center text-[10px] font-bold">✓</span>
+                            <strong>15 tin thường</strong> (60 ngày / tin) + <strong>20 lần up</strong>
+                        </li>
+                    </ul>
+                </div>
+                <button onclick="openCheckout('Combo Silver', '1.000.000 đ')"
+                    class="mt-6 w-full py-3 border border-slate-300 hover:border-slate-800 text-slate-800 font-bold text-xs rounded-xl transition-all">
+                    Mua Ngay
+                </button>
+            </div>
+
+            <!-- 6. Combo Gold -->
+            <div
+                class="app-card bg-white rounded-3xl p-6 border border-amber-200 flex flex-col justify-between shadow-sm relative">
+                <div>
+                    <!-- Illustration: Vương miện Gold 3D -->
+                    <div class="w-full h-32 flex items-center justify-center bg-amber-50 rounded-2xl mb-4">
+                        <svg class="w-24 h-24" viewBox="0 0 140 120" fill="none">
+                            <ellipse cx="70" cy="100" rx="42" ry="10" fill="#FDE68A" />
+                            <path d="M40 78C40 78 45 88 70 88C95 88 100 78 100 78L108 42L88 56L70 34L52 56L32 42L40 78Z"
+                                fill="#D97706" />
+                            <path d="M43 76C43 76 48 85 70 85C92 85 97 76 97 76L104 46L86 58L70 38L54 58L36 46L43 76Z"
+                                fill="#F59E0B" />
+                            <circle cx="34" cy="42" r="3" fill="#EF4444" />
+                            <circle cx="70" cy="34" r="4" fill="#3B82F6" />
+                            <circle cx="106" cy="42" r="3" fill="#10B981" />
+                        </svg>
+                    </div>
+                    <span
+                        class="text-[11px] font-bold text-amber-800 bg-amber-100 px-2.5 py-1 rounded-md uppercase">Combo
+                        Vàng</span>
+                    <h3 class="text-lg font-bold text-slate-900 mt-2">Gold VIP</h3>
+                    <div class="mt-2 flex items-baseline gap-1">
+                        <span class="text-2xl font-extrabold text-slate-900">2.000.000</span>
+                        <span class="text-sm font-semibold text-slate-500">đ</span>
+                    </div>
+                    <hr class="my-4 border-slate-100">
+                    <ul class="space-y-2.5 text-xs text-slate-600 font-medium">
+                        <li class="flex items-center gap-2">
+                            <span
+                                class="w-4 h-4 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center text-[10px] font-bold">✓</span>
+                            <strong>5 tin VIP 1</strong> (Hiển thị 15 ngày / tin)
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span
+                                class="w-4 h-4 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center text-[10px] font-bold">✓</span>
+                            <strong>5 VIP 2 + 5 VIP 3</strong> (15 ngày / tin)
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span
+                                class="w-4 h-4 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center text-[10px] font-bold">✓</span>
+                            <strong>15 tin thường</strong> + <strong>30 lần up tin</strong>
+                        </li>
+                    </ul>
+                </div>
+                <button onclick="openCheckout('Combo Gold', '2.000.000 đ')"
+                    class="mt-6 w-full py-3 bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-amber-500/20">
+                    Mua Gói Gold
+                </button>
+            </div>
+
+            <!-- 7. Combo Diamond -->
+            <div
+                class="app-card bg-slate-900 text-white rounded-3xl p-6 border border-indigo-700/50 flex flex-col justify-between shadow-xl relative overflow-hidden">
+                <div class="absolute -top-10 -right-10 w-36 h-36 bg-indigo-500/20 rounded-full blur-2xl"></div>
+                <div>
+                    <!-- Illustration: Kim cương 3D đa diện -->
+                    <div
+                        class="w-full h-32 flex items-center justify-center bg-indigo-950/60 rounded-2xl mb-4 border border-indigo-500/30">
+                        <svg class="w-24 h-24" viewBox="0 0 140 120" fill="none">
+                            <ellipse cx="70" cy="104" rx="36" ry="8" fill="#4338CA" fill-opacity="0.4" />
+                            <polygon points="45,45 70,22 95,45 70,98" fill="#6366F1" />
+                            <polygon points="70,22 95,45 82,45 70,22" fill="#A5B4FC" />
+                            <polygon points="70,22 45,45 58,45 70,22" fill="#818CF8" />
+                            <polygon points="58,45 70,98 70,45" fill="#4F46E5" />
+                            <polygon points="82,45 70,98 70,45" fill="#C7D2FE" />
+                            <polygon points="82,45 95,45 70,98" fill="#4338CA" />
+                            <polygon points="58,45 45,45 70,98" fill="#3730A3" />
+                        </svg>
+                    </div>
+                    <span
+                        class="text-[11px] font-bold text-indigo-300 bg-indigo-900/60 px-2.5 py-1 rounded-md uppercase border border-indigo-700">Phân
+                        khúc cao cấp nhất</span>
+                    <h3 class="text-lg font-bold text-white mt-2">💎 Diamond VIP</h3>
+                    <div class="mt-2 flex items-baseline gap-1">
+                        <span class="text-2xl font-extrabold text-white">5.000.000</span>
+                        <span class="text-sm font-semibold text-indigo-300">đ</span>
+                    </div>
+                    <hr class="my-4 border-indigo-800">
+                    <ul class="space-y-2.5 text-xs text-indigo-100 font-medium">
+                        <li class="flex items-center gap-2">
+                            <span
+                                class="w-4 h-4 rounded-full bg-indigo-500 text-white flex items-center justify-center text-[10px] font-bold">✓</span>
+                            <strong>5 tin VIP ĐẶC BIỆT</strong> (15 ngày/tin)
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span
+                                class="w-4 h-4 rounded-full bg-indigo-500 text-white flex items-center justify-center text-[10px] font-bold">✓</span>
+                            <strong>15 tin VIP 1, 2, 3</strong> (Mỗi loại 5 tin)
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span
+                                class="w-4 h-4 rounded-full bg-indigo-500 text-white flex items-center justify-center text-[10px] font-bold">✓</span>
+                            <strong>15 tin thường</strong> + <strong>30 lần up tin</strong>
+                        </li>
+                    </ul>
+                </div>
+                <button onclick="openCheckout('Combo Diamond', '5.000.000 đ')"
+                    class="mt-6 w-full py-3 bg-indigo-500 hover:bg-indigo-400 text-white font-bold text-xs rounded-xl transition-all shadow-lg shadow-indigo-500/30">
+                    Mua Gói Diamond
+                </button>
+            </div>
+
+            <!-- 8. Gói UP Tin (5K & 10K) -->
+            <div
+                class="app-card bg-white rounded-3xl p-6 border border-cyan-200 flex flex-col justify-between shadow-sm relative">
+                <div>
+                    <!-- Illustration: Tên lửa Booster tăng tốc hiển thị -->
+                    <div class="w-full h-32 flex items-center justify-center bg-cyan-50 rounded-2xl mb-4">
+                        <svg class="w-24 h-24" viewBox="0 0 140 120" fill="none">
+                            <ellipse cx="70" cy="102" rx="36" ry="8" fill="#CFFAFE" />
+                            <g transform="translate(70, 52) rotate(-35) translate(-70, -52)">
+                                <path d="M65 72C65 72 70 94 70 94C70 94 75 72 75 72Z" fill="#F97316" />
+                                <path d="M62 42C62 30 70 18 70 18C70 18 78 30 78 42V72H62V42Z" fill="#06B6D4" />
+                                <polygon points="62,54 52,70 62,72" fill="#0891B2" />
+                                <polygon points="78,54 88,70 78,72" fill="#0891B2" />
+                                <circle cx="70" cy="44" r="5" fill="#ECFEFF" />
+                            </g>
+                        </svg>
+                    </div>
+                    <span class="text-[11px] font-bold text-cyan-700 bg-cyan-50 px-2.5 py-1 rounded-md uppercase">Đẩy
+                        tin tức thì</span>
+                    <h3 class="text-lg font-bold text-slate-900 mt-2">Combo UP Tin 5K / 10K</h3>
+                    <div class="mt-2 flex items-baseline gap-1">
+                        <span class="text-2xl font-extrabold text-slate-900">100.000</span>
+                        <span class="text-sm font-semibold text-slate-500">đ - 200.000 đ</span>
+                    </div>
+                    <hr class="my-4 border-slate-100">
+                    <ul class="space-y-2.5 text-xs text-slate-600 font-medium">
+                        <li class="flex items-center gap-2">
+                            <span
+                                class="w-4 h-4 rounded-full bg-cyan-100 text-cyan-700 flex items-center justify-center text-[10px] font-bold">✓</span>
+                            <strong>5.000</strong> hoặc <strong>10.000 lượt up</strong> tin
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span
+                                class="w-4 h-4 rounded-full bg-cyan-100 text-cyan-700 flex items-center justify-center text-[10px] font-bold">✓</span>
+                            Hạn dùng <strong>03 tháng</strong> linh hoạt
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span
+                                class="w-4 h-4 rounded-full bg-cyan-100 text-cyan-700 flex items-center justify-center text-[10px] font-bold">✓</span>
+                            Giúp tin đăng luôn đứng đầu danh mục
+                        </li>
+                    </ul>
+                </div>
+                <div class="grid grid-cols-2 gap-2 mt-6">
+                    <button onclick="openCheckout('Combo UP5K (5.000 Lượt)', '100.000 đ')"
+                        class="py-2.5 bg-cyan-600 hover:bg-cyan-700 text-white font-bold text-xs rounded-xl transition-all">
+                        UP 5K (100k)
+                    </button>
+                    <button onclick="openCheckout('Combo UP10K (10.000 Lượt)', '200.000 đ')"
+                        class="py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl transition-all">
+                        UP 10K (200k)
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ================= SECTION 2: BẢNG GIÁ THEO NGÀY (BÁN / THUÊ) ================= -->
+    <section id="section-daily" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 hidden">
+        <!-- Switch Category: BÁN vs CHO THUÊ -->
+        <div
+            class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6 bg-white p-4 rounded-2xl border border-slate-200">
+            <div>
+                <h3 class="text-base font-bold text-slate-900">Bảng Giá Tin Đăng Lẻ Theo Ngày</h3>
+                <p class="text-xs text-slate-500 mt-0.5">Giá chưa bao gồm VAT • Đơn vị tính: VNĐ</p>
+            </div>
+            <div class="inline-flex p-1 bg-slate-100 rounded-xl">
+                <button onclick="toggleDailyType('ban')" id="btn-toggle-ban"
+                    class="px-5 py-2 rounded-lg text-xs font-bold transition-all bg-white text-emerald-800 shadow-sm">
+                    🏡 Bất Động Sản Bán
+                </button>
+                <button onclick="toggleDailyType('thue')" id="btn-toggle-thue"
+                    class="px-5 py-2 rounded-lg text-xs font-semibold transition-all text-slate-600 hover:text-slate-900">
+                    🔑 Bất Động Sản Cho Thuê
+                </button>
+            </div>
+        </div>
+
+        <!-- Table Container -->
+        <div class="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-sm">
+                    <thead>
+                        <tr
+                            class="bg-slate-50 border-b border-slate-200 text-xs font-bold text-slate-600 uppercase tracking-wider">
+                            <th class="py-4 px-6">Loại Tin</th>
+                            <th class="py-4 px-6 text-center">1 Ngày</th>
+                            <th class="py-4 px-6 text-center">7 Ngày</th>
+                            <th class="py-4 px-6 text-center">15 Ngày</th>
+                            <th class="py-4 px-6 text-center bg-emerald-50/60 text-emerald-900">30 Ngày (Tiết kiệm 20%)
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="daily-table-body" class="divide-y divide-slate-100 font-medium">
+                        <!-- Data will be populated via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Note & Features of Listing Types -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-6">
+            <div class="bg-red-50/60 border border-red-200/80 rounded-2xl p-4">
+                <div class="flex items-center gap-2 text-red-600 font-bold text-sm">
+                    <span>⭐</span> VIP ĐẶC BIỆT / VIP 1
+                </div>
+                <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+                    Tiêu đề in hoa màu đỏ, viền nổi bật. Vị trí đầu trang tìm kiếm, đạt tỷ lệ click và liên hệ giao dịch
+                    cao nhất.
+                </p>
+            </div>
+            <div class="bg-orange-50/60 border border-orange-200/80 rounded-2xl p-4">
+                <div class="flex items-center gap-2 text-orange-600 font-bold text-sm">
+                    <span>⭐</span> VIP 2 / VIP 3
+                </div>
+                <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+                    Tiêu đề màu cam (VIP 2 in hoa, VIP 3 thường). Nằm ngay dưới các tin VIP cấp cao hơn, cân bằng chi
+                    phí và hiển thị.
+                </p>
+            </div>
+            <div class="bg-blue-50/60 border border-blue-200/80 rounded-2xl p-4">
+                <div class="flex items-center gap-2 text-blue-600 font-bold text-sm">
+                    <span>🔖</span> TIN THƯỜNG
+                </div>
+                <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+                    Tiêu đề chữ thường màu xanh. Lựa chọn kinh tế giúp phủ kín số lượng bài đăng cho giỏ hàng nhà đất và
+                    phòng thuê.
+                </p>
+            </div>
+        </div>
+
+        <div class="mt-4 p-4 bg-slate-100/80 rounded-2xl text-xs text-slate-600 space-y-1">
+            <p>• Thời hạn đăng tối thiểu của <strong>TIN VIP ĐẶC BIỆT là 07 ngày</strong>.</p>
+            <p>• Thời hạn đăng tối thiểu đối với <strong>VIP 1, VIP 2 và tin thường là 5 ngày</strong>.</p>
+            <p>• Chương trình khuyến mại <strong>giảm 20%</strong> áp dụng cho tất cả tin đăng từ <strong>01 tháng trở
+                    lên</strong> của các loại tin VIP.</p>
+        </div>
+    </section>
+
+
+    <!-- ================= SECTION 3: GÓI VIP HOÀN TIỀN ================= -->
+    <section id="section-vip-cashback" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 hidden">
+        <div class="mb-6">
+            <h3 class="text-xl font-bold text-slate-900">Gói Nạp VIP Hoàn Tiền (Cashback)</h3>
+            <p class="text-sm text-slate-500 mt-1">Nạp hạn mức sử dụng từ 3 đến 4 tháng và nhận hoàn tiền trực tiếp vào
+                ví sau mỗi tin đăng.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="vip-cashback-container">
+            <!-- Populated via JS -->
+        </div>
+    </section>
+
+
+    <!-- ================= SECTION 4: NẠP TIỀN NHANH ================= -->
+    <section id="section-deposit" class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 hidden">
+        <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm">
+            <h3 class="text-xl font-bold text-slate-900">Nạp Tiền Nhanh Vào Ví</h3>
+            <p class="text-sm text-slate-500 mt-1">Chọn mệnh giá nạp tiền nhanh để đăng tin hoặc mua combo tức thì:</p>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6">
+                <button onclick="openDeposit(50000, '50.000 đ', 54000)"
+                    class="p-4 rounded-2xl border-2 border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/40 text-center transition-all">
+                    <div class="text-xs font-bold text-slate-400 uppercase">Mệnh giá</div>
+                    <div class="text-lg font-extrabold text-slate-800 mt-1">50.000 đ</div>
+                    <div class="text-[11px] text-slate-500 mt-1">VAT: 54.000đ</div>
+                </button>
+                <button onclick="openDeposit(100000, '100.000 đ', 108000)"
+                    class="p-4 rounded-2xl border-2 border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/40 text-center transition-all">
+                    <div class="text-xs font-bold text-slate-400 uppercase">Mệnh giá</div>
+                    <div class="text-lg font-extrabold text-slate-800 mt-1">100.000 đ</div>
+                    <div class="text-[11px] text-slate-500 mt-1">VAT: 108.000đ</div>
+                </button>
+                <button onclick="openDeposit(200000, '200.000 đ', 216000)"
+                    class="p-4 rounded-2xl border-2 border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/40 text-center transition-all">
+                    <div class="text-xs font-bold text-slate-400 uppercase">Mệnh giá</div>
+                    <div class="text-lg font-extrabold text-slate-800 mt-1">200.000 đ</div>
+                    <div class="text-[11px] text-slate-500 mt-1">VAT: 216.000đ</div>
+                </button>
+                <button onclick="openDeposit(500000, '500.000 đ', 540000)"
+                    class="p-4 rounded-2xl border-2 border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/40 text-center transition-all">
+                    <div class="text-xs font-bold text-slate-400 uppercase">Mệnh giá</div>
+                    <div class="text-lg font-extrabold text-slate-800 mt-1">500.000 đ</div>
+                    <div class="text-[11px] text-slate-500 mt-1">VAT: 540.000đ</div>
+                </button>
+            </div>
+
+            <div class="mt-8 p-4 bg-slate-50 rounded-2xl border border-slate-100 flex items-center gap-3">
+                <div
+                    class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-lg">
+                    💡</div>
+                <p class="text-xs text-slate-600">Số dư nạp sẽ được cộng ngay vào tài khoản chính để thanh toán cho mọi
+                    bài đăng Bán hoặc Cho Thuê.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Checkout & Confirmation Modal -->
+    <div id="checkout-modal"
+        class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm transition-all">
+        <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl relative">
+            <button onclick="closeCheckout()"
+                class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center font-bold">
+                ✕
+            </button>
+            <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center mb-4">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900">Xác Nhận Đăng Ký Gói</h3>
+            <p class="text-xs text-slate-500 mt-1">Vui lòng kiểm tra lại thông tin gói dịch vụ trước khi kích hoạt:</p>
+
+            <div class="my-5 p-4 rounded-2xl bg-slate-50 border border-slate-100 space-y-2">
+                <div class="flex justify-between items-center text-xs">
+                    <span class="text-slate-500">Tên gói dịch vụ:</span>
+                    <span class="font-bold text-slate-800" id="modal-pkg-name">-</span>
+                </div>
+                <div class="flex justify-between items-center text-xs">
+                    <span class="text-slate-500">Giá trị thanh toán:</span>
+                    <span class="text-base font-extrabold text-emerald-600" id="modal-pkg-price">-</span>
+                </div>
+            </div>
+
+            <div class="flex gap-3">
+                <button onclick="closeCheckout()"
+                    class="w-1/2 py-3 rounded-xl border border-slate-200 text-slate-600 text-xs font-bold hover:bg-slate-50">
+                    Hủy bỏ
+                </button>
+                <button onclick="confirmCheckout()"
+                    class="w-1/2 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-md shadow-emerald-600/20">
+                    Xác Nhận Mua
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data Sources
+        const pricingBan = [
+            { type: '⭐ VIP ĐẶC BIỆT', badge: 'text-red-500 font-bold', d1: '100.000', d7: '700.000', d15: '1.500.000', d30: '3.000.000' },
+            { type: 'VIP 1', badge: 'text-orange-500 font-bold', d1: '50.000', d7: '350.000', d15: '750.000', d30: '1.500.000' },
+            { type: 'VIP 2', badge: 'text-blue-500 font-bold', d1: '30.000', d7: '210.000', d15: '450.000', d30: '900.000' },
+            { type: 'VIP 3', badge: 'text-teal-500 font-bold', d1: '20.000', d7: '140.000', d15: '300.000', d30: '600.000' },
+            { type: 'Tin thường', badge: 'text-slate-600 font-medium', d1: '3.000', d7: '21.000', d15: '45.000', d30: '90.000' }
+        ];
+
+        const pricingThue = [
+            { type: '⭐ VIP ĐẶC BIỆT', badge: 'text-red-500 font-bold', d1: '80.000', d7: '560.000', d15: '1.200.000', d30: '2.400.000' },
+            { type: 'VIP 1', badge: 'text-orange-500 font-bold', d1: '40.000', d7: '280.000', d15: '600.000', d30: '1.200.000' },
+            { type: 'VIP 2', badge: 'text-blue-500 font-bold', d1: '24.000', d7: '168.000', d15: '360.000', d30: '720.000' },
+            { type: 'VIP 3', badge: 'text-teal-500 font-bold', d1: '16.000', d7: '112.000', d15: '240.000', d30: '480.000' },
+            { type: 'Tin thường', badge: 'text-slate-600 font-medium', d1: '2.400', d7: '16.800', d15: '36.000', d30: '72.000' }
+        ];
+
+        const vipCashback = [
+            { name: 'VIP Đặc Biệt', price: '25.000.000 đ', refund: 15, duration: '4 Tháng', note: 'Đăng tin Vip Đặc Biệt được hoàn 15% giá trị tin (chưa VAT)', color: 'border-red-500 bg-red-50/30' },
+            { name: 'VIP Chung (1, 2, 3)', price: '20.000.000 đ', refund: 12, duration: '4 Tháng', note: 'Đăng tin Vip 1, Vip 2, Vip 3 được hoàn 12% giá trị tin (chưa VAT)', color: 'border-indigo-500 bg-indigo-50/30' },
+            { name: 'VIP 1', price: '15.000.000 đ', refund: 10, duration: '3 Tháng', note: 'Đăng tin Vip 1 được hoàn 10% giá trị tin (chưa VAT)', color: 'border-orange-500 bg-orange-50/30' },
+            { name: 'VIP 2', price: '7.500.000 đ', refund: 10, duration: '3 Tháng', note: 'Đăng tin Vip 2 được hoàn 10% giá trị tin (chưa VAT)', color: 'border-blue-500 bg-blue-50/30' },
+            { name: 'VIP 3', price: '5.000.000 đ', refund: 10, duration: '3 Tháng', note: 'Đăng tin Vip 3 được hoàn 10% giá trị tin (chưa VAT)', color: 'border-teal-500 bg-teal-50/30' }
+        ];
+
+        let currentDailyMode = 'ban';
+
+        // Switch between Sections
+        function switchView(tabKey) {
+            const sections = ['combo', 'daily', 'vip-cashback', 'deposit'];
+            sections.forEach(s => {
+                document.getElementById('section-' + s).classList.add('hidden');
+                document.getElementById('nav-' + s).classList.remove('bg-white', 'text-slate-900', 'shadow-sm');
+                document.getElementById('nav-' + s).classList.add('text-slate-600');
+            });
+
+            document.getElementById('section-' + tabKey).classList.remove('hidden');
+            const activeNav = document.getElementById('nav-' + tabKey);
+            activeNav.classList.add('bg-white', 'text-slate-900', 'shadow-sm');
+            activeNav.classList.remove('text-slate-600');
+
+            if (tabKey === 'daily') renderDailyTable();
+            if (tabKey === 'vip-cashback') renderVipCashback();
+        }
+
+        // Toggle Bán vs Cho Thuê
+        function toggleDailyType(mode) {
+            currentDailyMode = mode;
+            const btnBan = document.getElementById('btn-toggle-ban');
+            const btnThue = document.getElementById('btn-toggle-thue');
+
+            if (mode === 'ban') {
+                btnBan.className = 'px-5 py-2 rounded-lg text-xs font-bold transition-all bg-white text-emerald-800 shadow-sm';
+                btnThue.className = 'px-5 py-2 rounded-lg text-xs font-semibold transition-all text-slate-600 hover:text-slate-900';
+            } else {
+                btnThue.className = 'px-5 py-2 rounded-lg text-xs font-bold transition-all bg-white text-emerald-800 shadow-sm';
+                btnBan.className = 'px-5 py-2 rounded-lg text-xs font-semibold transition-all text-slate-600 hover:text-slate-900';
+            }
+            renderDailyTable();
+        }
+
+        function renderDailyTable() {
+            const data = currentDailyMode === 'ban' ? pricingBan : pricingThue;
+            const tbody = document.getElementById('daily-table-body');
+            tbody.innerHTML = data.map(item => `
+        <tr class="hover:bg-slate-50/80 transition-colors">
+          <td class="py-4 px-6 ${item.badge}">${item.type}</td>
+          <td class="py-4 px-6 text-center text-slate-600">${item.d1} đ</td>
+          <td class="py-4 px-6 text-center text-slate-600">${item.d7} đ</td>
+          <td class="py-4 px-6 text-center text-slate-600">${item.d15} đ</td>
+          <td class="py-4 px-6 text-center font-extrabold text-emerald-600 bg-emerald-50/40">${item.d30} đ</td>
+        </tr>
+      `).join('');
+        }
+
+        function renderVipCashback() {
+            const container = document.getElementById('vip-cashback-container');
+            container.innerHTML = vipCashback.map(p => `
+        <div class="app-card bg-white rounded-3xl p-6 border-2 ${p.color} flex flex-col justify-between shadow-sm">
+          <div>
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">${p.duration}</span>
+              <span class="text-xs font-extrabold text-emerald-700 bg-emerald-100 px-2.5 py-1 rounded-full">Hoàn ${p.refund}%</span>
+            </div>
+            <h4 class="text-lg font-bold text-slate-900 mt-2">${p.name}</h4>
+            <div class="text-2xl font-extrabold text-slate-900 mt-2">${p.price}</div>
+            <p class="text-xs text-slate-600 mt-3 leading-relaxed">${p.note}</p>
+          </div>
+          <button onclick="openCheckout('${p.name}', '${p.price}')" class="mt-6 w-full py-3 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl transition-all shadow-md">
+            Đăng Ký Gói Hoàn Tiền
+          </button>
+        </div>
+      `).join('');
+        }
+
+        // Modal Control
+        function openCheckout(name, price) {
+            document.getElementById('modal-pkg-name').innerText = name;
+            document.getElementById('modal-pkg-price').innerText = price;
+            document.getElementById('checkout-modal').classList.remove('hidden');
+        }
+
+        function closeCheckout() {
+            document.getElementById('checkout-modal').classList.add('hidden');
+        }
+
+        function confirmCheckout() {
+            alert('Đã kích hoạt gói dịch vụ thành công!');
+            closeCheckout();
+        }
+
+        function openDeposit(nom, disp, vat) {
+            openCheckout('Nạp tiền vào ví (' + disp + ')', vat.toLocaleString('vi-VN') + ' đ (Đã gồm VAT)');
+        }
+    </script>
+</body>
+
+</html>
